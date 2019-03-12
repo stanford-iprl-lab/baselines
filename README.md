@@ -1,3 +1,23 @@
+# PPO Experiments
+
+To run an experiment, you must specify the following arguments
+```
+--exp-name: name of experiment, root directory where models and logs are saved
+--env: environment ID
+--network: type of network to use
+
+# example
+$ python baselines/run_ppo.py --exp-name test --env ReacherPyBulletEnv-v0 --network mlp --num_env 6
+```
+
+In your .bash_profile or .bashrc, add
+```bash
+export OPENAI_LOGDIR='<path of baselines project root>/experiments/'
+```
+
+------
+
+# (Baselines Readme Below)
 **Status:** Active (under active development, breaking changes may occur)
 
 <img src="data/logo.jpg" width=25% align="right" /> [![Build status](https://travis-ci.org/openai/baselines.svg?branch=master)](https://travis-ci.org/openai/baselines)
