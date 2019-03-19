@@ -52,6 +52,7 @@ class Model(object):
         self.CLIPRANGE = CLIPRANGE = tf.placeholder(tf.float32, [])
 
         neglogpac = train_model.pd.neglogp(A)
+ 
 
         # Calculate the entropy
         # Entropy is used to improve exploration by limiting the premature convergence to suboptimal policy.
@@ -81,7 +82,8 @@ class Model(object):
 
         # Final PG loss
         pg_loss = tf.reduce_mean(tf.maximum(pg_losses, pg_losses2))
-        approxkl = .5 * tf.reduce_mean(tf.square(neglogpac - OLDNEGLOGPAC))
+        kl = .5 * tf.square(neglogpac - OLDNEGLOGPAC)
+        approxkl = tf.reduce_mean(kl)
         clipfrac = tf.reduce_mean(tf.to_float(tf.greater(tf.abs(ratio - 1.0), CLIPRANGE)))
 
         # Total loss
@@ -110,8 +112,12 @@ class Model(object):
         self.var = var
         self._train_op = self.trainer.apply_gradients(grads_and_var)
         self.loss_names = ['policy_loss', 'value_loss', 'policy_entropy', 'approxkl', 'clipfrac']
-        self.stats_list = [pg_loss, vf_loss, entropy, approxkl, clipfrac]
 
+        ratio_summary = tf.summary.histogram('train/pac_ratio', ratio)
+        ret_summary = tf.summary.histogram('train/returns', self.R)
+        self.summ_op = tf.summary.merge([ratio_summary, ret_summary])
+
+        self.stats_list = [pg_loss, vf_loss, entropy, approxkl, clipfrac, self.summ_op]
 
         self.train_model = train_model
         self.act_model = act_model

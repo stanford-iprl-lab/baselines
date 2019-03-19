@@ -78,7 +78,7 @@ def train(args, ppo_args, network_args, extra_args):
     lr = ppo_kwargs['lr']
     ppo_kwargs['lr'] = lambda f:f*lr
     cliprange = ppo_kwargs['cliprange']
-    ppo_kwargs['cliprange'] = lambda f:f*cliprange
+    ppo_kwargs['cliprange'] = lambda f:f*cliprange if 'cliprange_flip' not in extra_args else lambda f: (1-f)*cliprange
 
     env = build_env(args)
     if args.save_video_interval != 0:

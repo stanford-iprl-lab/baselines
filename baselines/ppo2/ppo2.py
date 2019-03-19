@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 import os.path as osp
+import tensorflow as tf
 from baselines import logger
 from collections import deque
 from baselines.common import explained_variance, set_global_seeds
@@ -106,6 +107,7 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
     model = model_fn(policy=policy, ob_space=ob_space, ac_space=ac_space, nbatch_act=nenvs, nbatch_train=nbatch_train,
                     nsteps=nsteps, ent_coef=ent_coef, vf_coef=vf_coef,
                     max_grad_norm=max_grad_norm)
+    writer = tf.summary.FileWriter(osp.join(logger.get_dir(), 'tb'))
 
     if load_path is not None:
         model.load(load_path)
@@ -146,7 +148,7 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
             # Index of each element of batch_size
             # Create the indices array
             inds = np.arange(nbatch)
-            for _ in range(noptepochs):
+            for _ep in range(noptepochs):
                 # Randomize the indexes
                 np.random.shuffle(inds)
                 # 0 to batch_size with batch_train_size step
@@ -154,7 +156,11 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
                     end = start + nbatch_train
                     mbinds = inds[start:end]
                     slices = (arr[mbinds] for arr in (obs, returns, masks, actions, values, neglogpacs))
-                    mblossvals.append(model.train(lrnow, cliprangenow, *slices))
+                    mblossval = model.train(lrnow, cliprangenow, *slices)
+                    mblossval, summ = mblossval[:-1], mblossval[-1]
+                    mblossvals.append(mblossval)
+                    if _ep == 0:
+                        writer.add_summary(summ, global_step=start+(nbatch*(update-1)))
         else: # recurrent version
             assert nenvs % nminibatches == 0
             envsperbatch = nenvs // nminibatches
@@ -175,6 +181,7 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
         lossvals = np.mean(mblossvals, axis=0)
         # End timer
         tnow = time.time()
+
         # Calculate the fps (frame per second)
         fps = int(nbatch / (tnow - tstart))
         if update % log_interval == 0 or update == 1:
