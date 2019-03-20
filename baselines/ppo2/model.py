@@ -78,9 +78,8 @@ class Model(object):
         # Defining Loss = - J is equivalent to max J
         pg_losses = -ADV * ratio
         
-        rmin, rmax = tf.reduce_min(ratio), tf.reduce_max(ratio)
-        eps1, eps2 = tf.cond(rmin<1,lambda: CLIPRANGE/(1-rmin),lambda: CLIPRANGE), tf.cond(rmax>1,lambda: CLIPRANGE/(rmax-1),lambda: CLIPRANGE)
-        pg_losses2 = -ADV * tf.clip_by_value(ratio, 1.0 - eps1, 1.0 + eps2)
+        # rmin, rmax = tf.reduce_min(ratio, axis=0), tf.reduce_max(ratio, axis=0)
+        pg_losses2 = -ADV * tf.clip_by_value(ratio, 1.0 - CLIPRANGE, 1.0 + CLIPRANGE)
 
         # Final PG loss
         pg_loss = tf.reduce_mean(tf.maximum(pg_losses, pg_losses2))
