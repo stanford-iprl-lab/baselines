@@ -77,13 +77,16 @@ class Model(object):
 
         # Defining Loss = - J is equivalent to max J
         pg_losses = -ADV * ratio
-
-        pg_losses2 = -ADV * tf.clip_by_value(ratio, 1.0 - CLIPRANGE, 1.0 + CLIPRANGE)
+        
+        rmin, rmax = tf.reduce_min(ratio), tf.reduce_max(ratio)
+        eps1, eps2 = tf.cond(rmin<1,lambda: CLIPRANGE/(1-rmin),lambda: CLIPRANGE), tf.cond(rmax>1,lambda: CLIPRANGE/(rmax-1),lambda: CLIPRANGE)
+        pg_losses2 = -ADV * tf.clip_by_value(ratio, 1.0 - eps1, 1.0 + eps2)
 
         # Final PG loss
         pg_loss = tf.reduce_mean(tf.maximum(pg_losses, pg_losses2))
-        kl = .5 * tf.square(neglogpac - OLDNEGLOGPAC)
+        kl = .5 * tf.square(neglogpac - OLDNEGLOGPAC) 
         approxkl = tf.reduce_mean(kl)
+
         clipfrac = tf.reduce_mean(tf.to_float(tf.greater(tf.abs(ratio - 1.0), CLIPRANGE)))
 
         # Total loss

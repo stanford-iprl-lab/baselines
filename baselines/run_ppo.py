@@ -217,9 +217,10 @@ def ppo_arg_parser():
     parser.add_argument('--vf-coef', '--vf_coef', type=float, default=0.5, help='value fn loss coefficient')
     parser.add_argument('--max-grad-norm', '--max_grad_norm', type=float, default=0.5, help='grad norm clipping scalar')
     parser.add_argument('--gamma', type=float, default=0.99, help='discount factor')
+    parser.add_argument('--lam', type=float, default=0.95, help='advantage estimation discounting factor')
     parser.add_argument('--log-interval', '--log_interval', type=int, default=10, help='logging interval')
-    parser.add_argument('--nminibatches', type=int, default=4, help='number of training minibatches per update')
-    parser.add_argument('--noptepochs', type=int, default=4, help='number of training epochs per update')
+    parser.add_argument('--nminibatches', type=int, default=32, help='number of training minibatches per update')
+    parser.add_argument('--noptepochs', type=int, default=10, help='number of training epochs per update')
     parser.add_argument('--cliprange', type=float, default=0.2, help='clipping range, r schedule function [0,1] -> R+'
                                                                      ' where 1 is beginning of the training')
     parser.add_argument('--save-interval', '--save_interval', type=int, default=0, help='number of timesteps between saving events')
