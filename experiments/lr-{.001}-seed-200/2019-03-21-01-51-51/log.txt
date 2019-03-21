@@ -1,0 +1,76 @@
+Logging to /home/krishnan/baselines/experiments/lr-{.001}-seed-200/2019-03-21-01-51-51
+--------------------------------------
+| approxkl           | 0.0036656845  |
+| clipfrac           | 0.032568358   |
+| eplenmean          | 150           |
+| eprewmean          | -20.7         |
+| explained_variance | 0.004         |
+| fps                | 1111          |
+| nupdates           | 1             |
+| policy_entropy     | 2.827005      |
+| policy_loss        | -0.0017481375 |
+| serial_timesteps   | 2048          |
+| time_elapsed       | 22.1          |
+| total_timesteps    | 24576         |
+| value_loss         | 21.551687     |
+--------------------------------------
+--------------------------------------
+| approxkl           | 0.0071691656  |
+| clipfrac           | 0.08477785    |
+| eplenmean          | 150           |
+| eprewmean          | -3.39         |
+| explained_variance | 0.377         |
+| fps                | 1124          |
+| nupdates           | 10            |
+| policy_entropy     | 2.5209982     |
+| policy_loss        | -0.0055923844 |
+| serial_timesteps   | 20480         |
+| time_elapsed       | 215           |
+| total_timesteps    | 245760        |
+| value_loss         | 6.997388      |
+--------------------------------------
+--------------------------------------
+| approxkl           | 0.0077767693  |
+| clipfrac           | 0.094409205   |
+| eplenmean          | 150           |
+| eprewmean          | 10.3          |
+| explained_variance | 0.822         |
+| fps                | 1127          |
+| nupdates           | 20            |
+| policy_entropy     | 2.0453646     |
+| policy_loss        | -0.0056794276 |
+| serial_timesteps   | 40960         |
+| time_elapsed       | 432           |
+| total_timesteps    | 491520        |
+| value_loss         | 2.058312      |
+--------------------------------------
+--------------------------------------
+| approxkl           | 0.0077177817  |
+| clipfrac           | 0.094767235   |
+| eplenmean          | 150           |
+| eprewmean          | 14.4          |
+| explained_variance | 0.906         |
+| fps                | 1141          |
+| nupdates           | 30            |
+| policy_entropy     | 1.5010941     |
+| policy_loss        | -0.0043848753 |
+| serial_timesteps   | 61440         |
+| time_elapsed       | 646           |
+| total_timesteps    | 737280        |
+| value_loss         | 1.2679983     |
+--------------------------------------
+--------------------------------------
+| approxkl           | 0.010018338   |
+| clipfrac           | 0.13335775    |
+| eplenmean          | 150           |
+| eprewmean          | 15.5          |
+| explained_variance | 0.945         |
+| fps                | 1140          |
+| nupdates           | 40            |
+| policy_entropy     | 0.94280136    |
+| policy_loss        | -0.0027739895 |
+| serial_timesteps   | 81920         |
+| time_elapsed       | 863           |
+| total_timesteps    | 983040        |
+| value_loss         | 0.6899005     |
+--------------------------------------
