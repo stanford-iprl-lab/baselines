@@ -74,3 +74,18 @@ Logging to /home/krishnan/baselines/experiments/lr-{.001}-seed-1/2019-03-21-01-5
 | total_timesteps    | 983040        |
 | value_loss         | 0.8227724     |
 --------------------------------------
+--------------------------------------
+| approxkl           | 0.011031627   |
+| clipfrac           | 0.14851479    |
+| eplenmean          | 150           |
+| eprewmean          | 16.3          |
+| explained_variance | 0.967         |
+| fps                | 1101          |
+| nupdates           | 50            |
+| policy_entropy     | 0.48843122    |
+| policy_loss        | -0.0020581272 |
+| serial_timesteps   | 102400        |
+| time_elapsed       | 1.09e+03      |
+| total_timesteps    | 1228800       |
+| value_loss         | 0.45667917    |
+--------------------------------------
