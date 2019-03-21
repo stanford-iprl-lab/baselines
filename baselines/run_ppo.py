@@ -76,7 +76,10 @@ def train(args, ppo_args, network_args, extra_args):
         network_kwargs.update(vars(extra_args))
 
     lr = ppo_kwargs['lr']
-    ppo_kwargs['lr'] = lambda f:f*lr
+    if 'lr_anneal' in extra_args:
+        ppo_kwargs['lr'] = lambda f:f*lr
+    else:
+        ppo_kwargs['lr'] = lr
     cliprange = ppo_kwargs['cliprange']
     if 'cliprange_anneal' in extra_args:
         ppo_kwargs['cliprange'] = lambda f:f*cliprange

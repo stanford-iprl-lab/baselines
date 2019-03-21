@@ -61,6 +61,12 @@ class Model(object):
         # CALCULATE THE LOSS
         # Total loss = Policy gradient loss - entropy * entropy coefficient + Value coefficient * value loss
 
+        # estimate KL and reduce cliprange if KL is above .015
+        maxkl = .015
+        approxkl = .5 * tf.reduce_mean(tf.square(neglogpac - OLDNEGLOGPAC))
+        # meankl = tf.reduce_sum(tf.exp(-neglogpac)*(OLDNEGLOGPAC - neglogpac))
+        CLIPRANGE = tf.cond(approxkl > maxkl, lambda: CLIPRANGE * maxkl / approxkl, lambda: CLIPRANGE)
+
         # Clip the value to reduce variability during Critic training
         # Get the predicted value
         vpred = train_model.vf
@@ -83,8 +89,6 @@ class Model(object):
 
         # Final PG loss
         pg_loss = tf.reduce_mean(tf.maximum(pg_losses, pg_losses2))
-        kl = .5 * tf.square(neglogpac - OLDNEGLOGPAC) 
-        approxkl = tf.reduce_mean(kl)
 
         clipfrac = tf.reduce_mean(tf.to_float(tf.greater(tf.abs(ratio - 1.0), CLIPRANGE)))
 
@@ -113,13 +117,13 @@ class Model(object):
         self.grads = grads
         self.var = var
         self._train_op = self.trainer.apply_gradients(grads_and_var)
-        self.loss_names = ['policy_loss', 'value_loss', 'policy_entropy', 'approxkl', 'clipfrac']
+        self.loss_names = ['policy_loss', 'value_loss', 'policy_entropy', 'approxkl', 'clipfrac', 'cliprange']
 
         ratio_summary = tf.summary.histogram('train/pac_ratio', ratio)
         ret_summary = tf.summary.histogram('train/returns', self.R)
         self.summ_op = tf.summary.merge([ratio_summary, ret_summary])
 
-        self.stats_list = [pg_loss, vf_loss, entropy, approxkl, clipfrac, self.summ_op]
+        self.stats_list = [pg_loss, vf_loss, entropy, approxkl, clipfrac, CLIPRANGE, self.summ_op]
 
         self.train_model = train_model
         self.act_model = act_model
