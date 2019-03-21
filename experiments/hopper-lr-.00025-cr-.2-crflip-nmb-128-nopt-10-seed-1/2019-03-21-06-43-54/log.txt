@@ -749,3 +749,33 @@ Logging to /home/Minae/baselines/experiments/hopper-lr-.00025-cr-.2-crflip-nmb-1
 | total_timesteps    | 12042240     |
 | value_loss         | 111.48712    |
 -------------------------------------
+-------------------------------------
+| approxkl           | 0.0108189285 |
+| clipfrac           | 0.15025625   |
+| eplenmean          | 952          |
+| eprewmean          | 1.68e+03     |
+| explained_variance | 0.102        |
+| fps                | 1013         |
+| nupdates           | 500          |
+| policy_entropy     | -3.3645089   |
+| policy_loss        | 0.0013273536 |
+| serial_timesteps   | 1024000      |
+| time_elapsed       | 1.23e+04     |
+| total_timesteps    | 12288000     |
+| value_loss         | 108.409805   |
+-------------------------------------
+-------------------------------------
+| approxkl           | 0.011667451  |
+| clipfrac           | 0.15788575   |
+| eplenmean          | 919          |
+| eprewmean          | 1.63e+03     |
+| explained_variance | 0.105        |
+| fps                | 915          |
+| nupdates           | 510          |
+| policy_entropy     | -3.3305576   |
+| policy_loss        | 0.0011502609 |
+| serial_timesteps   | 1044480      |
+| time_elapsed       | 1.25e+04     |
+| total_timesteps    | 12533760     |
+| value_loss         | 110.592224   |
+-------------------------------------
