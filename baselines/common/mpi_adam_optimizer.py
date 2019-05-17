@@ -1,3 +1,5 @@
+# -*- coding: future_fstrings -*-
+
 import numpy as np
 import tensorflow as tf
 from mpi4py import MPI

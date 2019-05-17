@@ -1,6 +1,7 @@
 import sys
 import multiprocessing
 import os.path as osp
+import os
 import gym
 from collections import defaultdict
 import tensorflow as tf
@@ -12,6 +13,7 @@ from baselines.common.cmd_util import common_arg_parser, parse_unknown_args, mak
 from baselines.common.tf_util import get_session
 from baselines import logger
 from importlib import import_module
+from datetime import datetime
 
 from baselines.common.vec_env.vec_normalize import VecNormalize
 
@@ -193,13 +195,20 @@ def main(args):
     arg_parser = common_arg_parser()
     args, unknown_args = arg_parser.parse_known_args(args)
     extra_args = parse_cmdline_kwargs(unknown_args)
+    exp_name = 'ppo_exp'
+    if 'exp_name' in extra_args:
+        exp_name = extra_args.pop('exp_name')
+
+    dt = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    save_dir = osp.join(os.getenv('OPENAI_LOGDIR'), exp_name, dt)
+
 
     if args.extra_import is not None:
         import_module(args.extra_import)
 
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
-        logger.configure()
+        logger.configure(dir=save_dir)
     else:
         logger.configure(format_strs=[])
         rank = MPI.COMM_WORLD.Get_rank()
@@ -208,7 +217,7 @@ def main(args):
     env.close()
 
     if args.save_path is not None and rank == 0:
-        save_path = osp.expanduser(args.save_path)
+        save_path = osp.join(save_dir, args.save_path)
         model.save(save_path)
 
     if args.play:

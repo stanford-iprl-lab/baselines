@@ -248,7 +248,7 @@ def common_arg_parser():
     """
     parser = arg_parser()
     parser.add_argument('--exp-name', '--exp_name', help='experiment name', type=str, default='ppo-exp')
-    parser.add_argument('--env', help='environment ID', type=str, default='Reacher-v2')
+    parser.add_argument('--env', help='environment ID', type=str, default='ThreeFingerRawControl-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--alg', help='Algorithm', type=str, default='ppo2')
     parser.add_argument('--num_timesteps', type=float, default=1e6),
